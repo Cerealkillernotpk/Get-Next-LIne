@@ -6,13 +6,22 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 14:15:38 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/14 16:17:57 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/17 13:27:43 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char *get_next_line(int fd)
+char	*get_line()
 {
-    
+	
+}
+char	*get_read()
+{
+	
+}
+
+char	*get_next_line(int fd)
+{
+	
 }
 
 /*
