@@ -6,9 +6,11 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 13:35:29 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/17 13:37:52 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/17 14:55:47 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "get_next_line.h"
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
