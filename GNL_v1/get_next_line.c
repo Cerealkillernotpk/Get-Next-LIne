@@ -6,7 +6,7 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 14:15:38 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/17 13:27:43 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/17 14:01:59 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,18 @@ char	*get_line()
 }
 char	*get_read()
 {
+	char buffer[BUFFER_SIZE];
+	
+	buffer = ft_calloc(sizeof(char), BUFFER_SIZE);
+	read(fd, buffer, BUFFER_SIZE);
 	
 }
 
 char	*get_next_line(int fd)
 {
+	char	buffer[BUFFER_SIZE];
+	
+	buffer = ft_calloc(sizeof(char), BUFFER_SIZE);
 	
 }
 
