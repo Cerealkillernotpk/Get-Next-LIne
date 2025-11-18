@@ -6,34 +6,51 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 14:15:38 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/17 17:06:32 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/18 14:45:06 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	get_line(char *line, int fd)
+
+/*
+fonction avant n(buffer)
+	on a j valant chacun 0
+	on a avant_n et apres_n deux char*
+	tant que buffer[j] n'est pas un \n ou \0
+		mettre avant_n[j] a buffer[j]
+		ajouter 1 a j
+	return avant_n
+strjoin(line, avant_n(buffer))
+fonction apres n(buffer)
+tant que buffer[i] n'est pas un \n ou \0
+	mettre apres_n[i] a buffer[j]
+	ajouter 1 a i et a j
+
+	
+*/
+
+int	get_line(char *line, int fd, int len)
 {
 	char		*buffer;
+	static char	*tmp;
 	int			bn;
-	static int	i = 0;
 	int			j;
 
-	i = 0;
 	bn = 0;
+	tmp = 0;
 	buffer = 0;
 	while (bn == 0)
 	{
 		j = 0;
 		get_read(fd, &bn, buffer);
-		if(bn == 0)
+		while(j <= BUFFER_SIZE)
 		{
-			while(j <= BUFFER_SIZE)
-			{
-				line[i] = buffer[j];
-				i++;
-				j++;
-			}
+			line[len] = buffer[j];
+			len++;
+			j++;
 		}
 	}
+	line = strchr(line, '\n');
+	tmp[j] = line[len]
 }
 char	*get_read(int fd, int *bn, char *buffer)
 {
@@ -49,10 +66,13 @@ char	*get_next_line(int fd)
 {
 	static char	*buffer;
 	char		*line;
+	int 		len;
 	
+	len = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0 || fd > 1023)
 		return(NULL);
 	line = NULL;
+	line = malloc(sizeof(char) * (get_line(line, fd) + 1));
 	return(line);
 }
 
