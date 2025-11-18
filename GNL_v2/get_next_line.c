@@ -6,7 +6,7 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 14:15:38 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/18 15:04:38 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/18 15:03:50 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,40 +28,18 @@ tant que buffer[i] n'est pas un \n ou \0
 	
 */
 
-int	get_line(char *line, int fd, int len)
+char	*ft_before_bn(char *buffer)
 {
-	char		*buffer;
-	static char	*tmp;
-	int			bn;
-	int			j;
+	char	*before_n;
+	int		j;
 
-	bn = 0;
-	tmp = 0;
-	buffer = 0;
-	while (bn == 0)
+	before_n = 0;
+	j = 0;
+	while(buffer[j] != '\n' || buffer[j] != '\0' || j != BUFFER_SIZE)
 	{
-		j = 0;
-		get_read(fd, &bn, buffer);
-		while(j <= BUFFER_SIZE)
-		{
-			line[len] = buffer[j];
-			len++;
-			j++;
-		}
+		before_n[j] = 
 	}
-	line = strchr(line, '\n');
-	tmp[j] = line[len]
 }
-char	*get_read(int fd, int *bn, char *buffer)
-{
-	buffer = ft_calloc(sizeof(char), BUFFER_SIZE);
-	read(fd, buffer, BUFFER_SIZE);
-	if (ft_strchr(buffer, '\n') == 0)
-		bn = 0;
-	else
-		bn = 1;
-}
-
 
 char	*get_next_line(int fd)
 {
