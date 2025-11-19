@@ -6,10 +6,11 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 14:15:38 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/19 13:24:08 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:19:01 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "get_next_line.h"
 
 /*
 fonction avant n(buffer)
@@ -28,36 +29,44 @@ tant que buffer[i] n'est pas un \n ou \0
 	
 */
 
-char	*ft_before_bn(char *buffer, int	*bn)
+char	*ft_before_bn(char *buffer, int	*bn, int fd)
 {
-	char	*before_n;
+	char	*before_n = 0;
 	int		j;
 
 	before_n = 0;
+	buffer = malloc(sizeof(char) * BUFFER_SIZE);
+	if(!buffer)
+		return(NULL);
+	read(fd, buffer, BUFFER_SIZE);
 	before_n = malloc(sizeof(char) * (BUFFER_SIZE));
 	if (!before_n)
-		return (-1);
+		return (NULL);
 	j = 0;
 	while(buffer[j] != '\n' || buffer[j] != '\0' || j != BUFFER_SIZE)
 	{
 		before_n[j] = buffer[j];
 		if(buffer[j] == '\n')
-			bn = 1;
+			bn += 1;
 		j++;
 	}
-	return(before_n);
+	return (before_n);
 }
 
-char	*ft_after_bn(char *buffer)
+char	*ft_after_bn(char *buffer, int fd)
 {
 	char	*after_n;
 	int		i;
 	int		j;
 
 	after_n = 0;
+	buffer = malloc(sizeof(char) * BUFFER_SIZE);
+	if(!buffer)
+		return(NULL);
+	read(fd, buffer, BUFFER_SIZE);
 	after_n = malloc(sizeof(char) * (BUFFER_SIZE));
 	if (!after_n)
-		return (-1);
+		return (NULL);
 	i = 0;
 	j = 0;
 	while (buffer[j] != '\n' || buffer[j] != '\0')
@@ -66,7 +75,7 @@ char	*ft_after_bn(char *buffer)
 	{
 		after_n[i] = buffer[j];
 	}
-	return(before_n);
+	return(after_n);
 }
 
 char	*get_next_line(int fd)
@@ -76,17 +85,28 @@ char	*get_next_line(int fd)
 	int			bn;
 	
 	bn = 0;
+	line = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0 || fd > 1023)
 		return(NULL);
 	
 	line = ft_strjoin(line, buffer);
 	while (bn == 0)
 	{
-		buffer = ft_before_bn(buffer, &bn);
+		buffer = ft_before_bn(buffer, &bn, fd);
 		line = ft_strjoin(line, buffer);
-		buffer = ft_after_bn(buffer);
+		buffer = ft_after_bn(buffer, fd);
 	}
 	return(line);
+}
+
+# include <stdio.h>
+
+int main()
+{
+    int fd;
+    
+    fd = open("Text.txt", O_RDWR);
+    printf("%s", get_next_line(fd));
 }
 
 /*
