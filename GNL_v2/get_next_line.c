@@ -6,7 +6,7 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 14:15:38 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/18 17:52:29 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/19 13:24:08 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ char	*ft_before_bn(char *buffer, int	*bn)
 
 	before_n = 0;
 	before_n = malloc(sizeof(char) * (BUFFER_SIZE));
+	if (!before_n)
+		return (-1);
 	j = 0;
 	while(buffer[j] != '\n' || buffer[j] != '\0' || j != BUFFER_SIZE)
 	{
@@ -54,6 +56,8 @@ char	*ft_after_bn(char *buffer)
 
 	after_n = 0;
 	after_n = malloc(sizeof(char) * (BUFFER_SIZE));
+	if (!after_n)
+		return (-1);
 	i = 0;
 	j = 0;
 	while (buffer[j] != '\n' || buffer[j] != '\0')
@@ -67,14 +71,14 @@ char	*ft_after_bn(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer = 0;
+	static char	*buffer;
 	char		*line;
 	int			bn;
-	
 	
 	bn = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0 || fd > 1023)
 		return(NULL);
+	
 	line = ft_strjoin(line, buffer);
 	while (bn == 0)
 	{
