@@ -6,7 +6,7 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 13:35:29 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/19 14:04:46 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/20 14:38:56 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,20 @@ size_t	ft_strlen(const char *str)
 		i++;
 	}
 	return (i);
+}
+
+void	ft_bzero(void *s, size_t n)
+{
+	size_t			i;
+	unsigned char	*str;
+
+	str = s;
+	i = 0;
+	while (i < n)
+	{
+		str[i] = '\0';
+		i++;
+	}
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
@@ -51,4 +65,26 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 	str[i] = '\0';
 	return (str);
+}
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	size_t	i;
+	void	*res;
+
+	i = 0;
+	if (nmemb == 0 || size == 0)
+	{
+		res = malloc(0);
+		if (!res)
+			return (NULL);
+		return (res);
+	}
+	if (size != 0 && nmemb > (size_t) - 1 / size)
+		return (0);
+	res = malloc (nmemb * size);
+	if (!res)
+		return (NULL);
+	ft_bzero(res, size * nmemb);
+	return (res);
 }
