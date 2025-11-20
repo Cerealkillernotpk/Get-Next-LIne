@@ -6,7 +6,7 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 14:15:38 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/20 17:33:11 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/20 17:47:04 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ char	*ft_after_bn(char *buffer)
 		j++;
 	if	(!buffer[j])
 		return (tmp);
+	free(tmp);
 	j++;
 	after_n = malloc(sizeof(char) * (BUFFER_SIZE - j + 2));
 	if (!after_n)
@@ -80,6 +81,7 @@ char	*get_next_line(int fd)
 	tmp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!tmp)
 		return(NULL);
+	line = NULL;
 	if (ft_read(fd, tmp) < 0)
 	{
 		free(tmp);
@@ -93,7 +95,7 @@ char	*get_next_line(int fd)
 		if (bn)
 		{
 			after = ft_after_bn(tmp);
-			free = after;
+			free (after);
 			break;
 		}
 		if (ft_read(fd, tmp) < 0)

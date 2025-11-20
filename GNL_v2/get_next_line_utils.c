@@ -6,7 +6,7 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 13:35:29 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/20 16:26:56 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/20 17:57:23 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,25 @@ size_t	ft_strlen(const char *str)
 		i++;
 	}
 	return (i);
+}
+
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	size_t				i;
+	const unsigned char	*str1;
+	unsigned char		*str2;
+
+	str1 = src;
+	str2 = dest;
+	i = 0;
+	if (!dest && !src)
+		return (NULL);
+	while (i < n)
+	{
+		str2[i] = str1[i];
+		i++;
+	}
+	return (dest);
 }
 
 void	ft_bzero(void *s, size_t n)
@@ -44,49 +63,18 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		i;
 	int		j;
 
-	str = 0;
-	if (!s1 || !s2)
-		return (NULL);
-	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!str)
-		return (NULL);
 	i = 0;
+	if (s1)
+		i = ft_strlen(s1);
 	j = 0;
-	while (s1[i])
-	{
-		str[i] = s1[i];
-		i++;
-	}
-	while (s2[j])
-	{
-		str[i] = s2[j];
-		j++;
-		i++;
-	}
-	str[i] = '\0';
+	if (s2)
+		j = ft_strlen(s1);
+	str = malloc(sizeof(char) * (i + j + 1));
+	if (!str)
+		return(NULL);
+	ft_memcpy(str, s1, i);
+	ft_memcpy(str + i, s2, j + 1);
 	return (str);
-}
-
-void	*ft_calloc(size_t nmemb, size_t size)
-{
-	size_t	i;
-	void	*res;
-
-	i = 0;
-	if (nmemb == 0 || size == 0)
-	{
-		res = malloc(0);
-		if (!res)
-			return (NULL);
-		return (res);
-	}
-	if (size != 0 && nmemb > (size_t) - 1 / size)
-		return (0);
-	res = malloc (nmemb * size);
-	if (!res)
-		return (NULL);
-	ft_bzero(res, size * nmemb);
-	return (res);
 }
 
 char	*ft_strdup(const char *src)
