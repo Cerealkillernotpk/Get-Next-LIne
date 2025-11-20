@@ -6,7 +6,7 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 14:15:38 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/20 16:12:46 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/20 17:33:11 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ int		ft_read(int fd, char *buffer)
 	int		res;
 
 	res = 0;
-	if(!buffer)
-		return(-1);
 	res = read(fd, buffer, BUFFER_SIZE);
 	if (res <= 0)
 		return (-1);
@@ -28,24 +26,20 @@ int		ft_read(int fd, char *buffer)
 
 char	*ft_before_bn(char *buffer, int	*bn)
 {
-	char	*before_n = 0;
+	char	*before_n;
 	int		j;
 	
-	before_n = 0;
-	if (buffer == NULL)
-		return(NULL);
+	j = 0;
 	before_n = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!before_n)
 		return (NULL);
-	j = 0;
-	while(buffer[j] != '\0' && j != BUFFER_SIZE)
-	{
-		if (buffer[j] != '\0' && buffer[j] != '\n' && *bn == 0) 
-			before_n[j] = buffer[j];
-		if(buffer[j] == '\n')
-			*bn += 1;
+	while (buffer[j] != '\n' && buffer[j])
+	{ 
+		before_n[j] = buffer[j];
 		j++;
 	}
+	if (buffer[j] == '\n')
+			*bn = 1;
 	before_n[j] = '\0';
 	return (before_n);
 }
@@ -53,55 +47,59 @@ char	*ft_before_bn(char *buffer, int	*bn)
 char	*ft_after_bn(char *buffer)
 {
 	char	*after_n;
+	char	*tmp;
 	int		i;
 	int		j;
 
-	after_n = 0;
-	if(!buffer)
-		return(NULL);
-	after_n = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!after_n)
-		return (NULL);
 	i = 0;
 	j = 0;
-	while (buffer[j] != '\n' && buffer[j] != '\0')
+	tmp = ft_strdup("");
+	while (buffer[j] != '\n' && buffer[j])
 		j++;
-	while (j <= BUFFER_SIZE && buffer[j] != '\0')
-	{
-		j++;
-		after_n[i] = buffer[j];
-		i++;	
-	}
+	if	(!buffer[j])
+		return (tmp);
+	j++;
+	after_n = malloc(sizeof(char) * (BUFFER_SIZE - j + 2));
+	if (!after_n)
+		return (NULL);
+	while (buffer[j])
+		after_n[i++] = buffer[j++];
 	after_n[i] = '\0';
 	return(after_n);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
 	char		*tmp;
 	char		*line;
+	char		*before;
+	char		*after;
 	int			bn;
 	
 	bn = 0;
-	tmp = 0;
-	buffer = ft_calloc(BUFFER_SIZE, sizeof(char));
-	line = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > 1023)
+	tmp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!tmp)
 		return(NULL);
-	line = ft_strjoin(line, buffer);
-	while (bn == 0)
+	if (ft_read(fd, tmp) < 0)
 	{
-		tmp = ft_calloc(BUFFER_SIZE, sizeof(char));
-		bn = ft_read(fd, tmp);
-		if (bn < 0)
-			return (NULL);
-		buffer = ft_before_bn(tmp, &bn);
-		line = ft_strjoin(line, buffer);
-		if (bn > 0)
-			buffer = ft_after_bn(tmp);
 		free(tmp);
+		return(NULL);
 	}
+	while (!bn)
+	{
+		before = ft_before_bn(tmp, &bn);
+		line = ft_strjoin(line, before);
+		free(before);
+		if (bn)
+		{
+			after = ft_after_bn(tmp);
+			free = after;
+			break;
+		}
+		if (ft_read(fd, tmp) < 0)
+			break;
+	}
+	free(tmp);
 	return(line);
 }
 
@@ -109,13 +107,12 @@ char	*get_next_line(int fd)
 
 int main()
 {
-    int fd = 0;
+    int fd;
 	char *line;
     
+	fd = open("Text.txt", O_RDWR);
 	line = get_next_line(fd);
-    fd = open("Text.txt", O_RDWR);
     printf("%s", line);
-	free(line);
 }
 
 // ft get next line : remplit les buffer grace a calloc et appele (ft get line);

@@ -6,7 +6,7 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 13:35:29 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/20 14:38:56 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/20 16:26:56 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,27 @@ void	*ft_calloc(size_t nmemb, size_t size)
 		return (NULL);
 	ft_bzero(res, size * nmemb);
 	return (res);
+}
+
+char	*ft_strdup(const char *src)
+{
+	int		i;
+	int		n;
+	char	*dest;
+
+	i = 0;
+	n = 0;
+	while (src[i])
+		i++;
+	dest = 0;
+	dest = malloc ((i + 1) * sizeof(char));
+	if (!dest)
+		return (0);
+	while (src[n])
+	{
+		dest[n] = src[n];
+		n ++;
+	}
+	dest[n] = '\0';
+	return (dest);
 }
