@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/06 14:34:00 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/21 15:54:14 by adakhama         ###   ########.fr       */
+/*   Created: 2025/11/21 15:40:07 by adakhama          #+#    #+#             */
+/*   Updated: 2025/11/21 15:46:08 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "get_next_line.h"
+#include <stdio.h>
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
-# endif
+int main(void)
+{
+	int fd;
+	char *line;
 
-# include <unistd.h>
-# include <stdlib.h>
-# include <fcntl.h>
-
-char	*ft_strjoin(char *s1, char *s2);
-size_t	ft_strlen(const char *str);
-char    *get_next_line(int fd);
-void	*ft_calloc(size_t nmemb, size_t size);
-char	*ft_strdup(const char *src);
-void	ft_bzero(void *s, size_t n);
-
-#endif
+	fd = open("Text.txt", O_RDONLY);
+	if (fd < 0)
+	{
+		perror("open");
+		return (1);
+	}
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		printf("LINE: %s", line);
+		free(line);
+	}
+	close(fd);
+	return (0);
+}

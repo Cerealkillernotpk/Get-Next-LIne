@@ -6,7 +6,7 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 14:15:38 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/20 17:47:04 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/21 16:59:25 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,11 @@ char	*ft_before_bn(char *buffer, int	*bn)
 		j++;
 	}
 	if (buffer[j] == '\n')
-			*bn = 1;
+	{
+		before_n[j] = '\n';
+		*bn = 1;
+		j++;
+	}
 	before_n[j] = '\0';
 	return (before_n);
 }
@@ -47,20 +51,17 @@ char	*ft_before_bn(char *buffer, int	*bn)
 char	*ft_after_bn(char *buffer)
 {
 	char	*after_n;
-	char	*tmp;
 	int		i;
 	int		j;
 
 	i = 0;
 	j = 0;
-	tmp = ft_strdup("");
 	while (buffer[j] != '\n' && buffer[j])
 		j++;
 	if	(!buffer[j])
-		return (tmp);
-	free(tmp);
+		return (NULL);
 	j++;
-	after_n = malloc(sizeof(char) * (BUFFER_SIZE - j + 2));
+	after_n = malloc(sizeof(char) * (ft_strlen(buffer + j) + 1));
 	if (!after_n)
 		return (NULL);
 	while (buffer[j])
@@ -68,68 +69,66 @@ char	*ft_after_bn(char *buffer)
 	after_n[i] = '\0';
 	return(after_n);
 }
-
-char	*get_next_line(int fd)
+void 	ft_cond(char **after, char **tmp, char **line, int fd)
 {
-	char		*tmp;
-	char		*line;
 	char		*before;
-	char		*after;
 	int			bn;
 	
 	bn = 0;
+	while (!bn)
+	{
+		before = ft_before_bn(*tmp, &bn);
+		*line = ft_strjoin(*line, before);
+		free(before);
+		if (bn)
+		{
+			*after = ft_after_bn(*tmp);
+			break;
+		}
+		if (ft_read(fd, *tmp) < 0)
+			break;
+	}
+}
+char	*get_next_line(int fd)
+{
+	static char	*after = NULL;
+	char		*tmp;
+	char		*line;
+	
 	tmp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!tmp)
 		return(NULL);
+	ft_bzero(tmp, (BUFFER_SIZE + 1));
 	line = NULL;
 	if (ft_read(fd, tmp) < 0)
 	{
 		free(tmp);
 		return(NULL);
 	}
-	while (!bn)
-	{
-		before = ft_before_bn(tmp, &bn);
-		line = ft_strjoin(line, before);
-		free(before);
-		if (bn)
-		{
-			after = ft_after_bn(tmp);
-			free (after);
-			break;
-		}
-		if (ft_read(fd, tmp) < 0)
-			break;
-	}
+	line = ft_strjoin(line, after);
+	ft_cond(&after, &tmp, &line, fd);
 	free(tmp);
 	return(line);
 }
 
 # include <stdio.h>
 
-int main()
+int main(void)
 {
-    int fd;
+	int fd;
 	char *line;
-    
-	fd = open("Text.txt", O_RDWR);
-	line = get_next_line(fd);
-    printf("%s", line);
+
+	fd = open("Text.txt", O_RDONLY);
+	if (fd < 0)
+	{
+		perror("open");
+		return (1);
+	}
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		printf("%s", line);
+		free(line);
+	}
+	close(fd);
+	return (0);
 }
-
-// ft get next line : remplit les buffer grace a calloc et appele (ft get line);
-// ft get line : utilise strjoin pour concatener le buffer remplis et la dest qui ne range pas entre chaque appel, elle n'utilise que 3 char*;
-// ft read : remplis le buffer et utilise strchr pour verifier la presence de '\n' et affecte une valeur a bn en fonction de la veleur du strchr; 
-
-// fonction avant n(buffer)
-// 	on a j valant 0
-// 	on a avant_n et apres_n deux char*
-// 	tant que buffer[j] n'est pas un \n ou \0
-// 		mettre avant_n[j] a buffer[j]
-// 		ajouter 1 a j
-// 	return avant_n
-// strjoin(line, avant_n(buffer))
-// fonction apres n(buffer)
-// tant que buffer[i] n'est pas un \n ou \0
-// 	mettre apres_n[i] a buffer[j]
-// 	ajouter 1 a i et a j

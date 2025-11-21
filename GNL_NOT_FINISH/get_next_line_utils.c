@@ -5,82 +5,42 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/17 13:35:29 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/21 16:30:51 by adakhama         ###   ########.fr       */
+/*   Created: 2025/11/21 15:34:31 by adakhama          #+#    #+#             */
+/*   Updated: 2025/11/21 15:34:33 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *str)
+int	ft_contains_nl(char *s)
 {
-	size_t	i;
+	int	i;
 
+	if (!s)
+		return (0);
 	i = 0;
-	while (str[i])
+	while (s[i])
 	{
+		if (s[i] == '\n')
+			return (1);
 		i++;
 	}
+	return (0);
+}
+
+int	ft_strlen(char *s)
+{
+	int	i;
+
+	if (!s)
+		return (0);
+	i = 0;
+	while (s[i])
+		i++;
 	return (i);
 }
 
-void	*ft_memcpy(void *dest, const void *src, size_t n)
-{
-	size_t				i;
-	const unsigned char	*str1;
-	unsigned char		*str2;
-
-	str1 = src;
-	str2 = dest;
-	i = 0;
-	if (!dest || !src)
-		return (NULL);
-	while (i < n)
-	{
-		str2[i] = str1[i];
-		i++;
-	}
-	return (dest);
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	size_t			i;
-	unsigned char	*str;
-
-	str = s;
-	i = 0;
-	while (i < n)
-	{
-		str[i] = '\0';
-		i++;
-	}
-}
-
-// char	*ft_strjoin(char const *s1, char const *s2)
-// {
-// 	char				*res;
-// 	unsigned int		s1_len;
-// 	unsigned int		s2_len;
-
-// 	res = 0;
-// 	s1_len = 0;
-// 	if (s1)
-// 		s1_len = ft_strlen(s1);
-// 	s2_len = 0;
-// 	if (s2)
-// 		s2_len = ft_strlen(s2);
-// 	res = malloc(sizeof(char) * (s1_len + s2_len + 1));
-// 	if (!res)
-// 		return(NULL);
-// 	ft_memcpy(res, s1, s1_len);
-// 	ft_memcpy(res + s1_len, s2, s2_len + 1);
-// 	res[(s1_len + s2_len)] = '\0';
-// 	return (res);
-// }
-
-
-char	*ft_strdup(const char *s)
+char	*ft_strdup(char *s)
 {
 	char	*dup;
 	int		i;
@@ -115,10 +75,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s1[++i])
 		new[i] = s1[i];
 	j = 0;
-	free(s1);
 	while (s2[j])
 		new[i++] = s2[j++];
 	new[i] = '\0';
+	free(s1);
 	return (new);
 }
-
