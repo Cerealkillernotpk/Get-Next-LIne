@@ -6,7 +6,7 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 14:15:38 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/21 17:16:15 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/25 09:43:13 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,10 @@ void	ft_cond(char **after, char **tmp, char **line, int fd)
 			break ;
 		}
 		if (ft_read(fd, *tmp) < 0)
+		{
+			free(after);
 			break ;
+		}
 	}
 }
 
@@ -108,6 +111,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	line = ft_strjoin(line, after);
+	free(after);
 	ft_cond(&after, &tmp, &line, fd);
 	free(tmp);
 	return (line);

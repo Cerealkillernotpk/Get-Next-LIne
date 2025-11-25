@@ -6,7 +6,7 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 13:35:29 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/21 17:10:49 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/25 10:23:03 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	const unsigned char	*str1;
 	unsigned char		*str2;
 
-	str1 = src;
+str1 = src;
 	str2 = dest;
 	i = 0;
 	if (!dest || !src)
@@ -62,7 +62,7 @@ char	*ft_strdup(const char *s)
 	char	*dup;
 	int		i;
 
-	dup = malloc(ft_strlen(s) + 1);
+	dup = malloc(ft_strlen(s + 1));
 	if (!dup)
 		return (NULL);
 	i = 0;
