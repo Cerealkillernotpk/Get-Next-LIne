@@ -6,7 +6,7 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 13:35:29 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/25 10:23:03 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/25 19:29:01 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*ft_strdup(const char *s)
 	char	*dup;
 	int		i;
 
-	dup = malloc(ft_strlen(s + 1));
+	dup = malloc(ft_strlen(s) + 1);
 	if (!dup)
 		return (NULL);
 	i = 0;
@@ -92,9 +92,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s1[++i])
 		new[i] = s1[i];
 	j = 0;
-	free(s1);
 	while (s2[j])
 		new[i++] = s2[j++];
 	new[i] = '\0';
+	free(s1);
 	return (new);
 }
