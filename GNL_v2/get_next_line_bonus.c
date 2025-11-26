@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 14:15:38 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/26 13:48:29 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/26 13:47:59 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	ft_read(int fd, char *buffer)
 {
@@ -75,7 +75,6 @@ void	ft_cond(char **after, char **tmp, char **line, int fd)
 	char		*before;
 	int			bn;
 
-	*after = NULL;
 	bn = 0;
 	while (!bn)
 	{
@@ -99,29 +98,29 @@ void	ft_cond(char **after, char **tmp, char **line, int fd)
 
 char	*get_next_line(int fd)
 {
-	static char	*after = NULL;
+	static char	*after[1024];
 	char		*tmp;
 	char		*line;
 
 	tmp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!tmp)
 	{
-		free(after);
+		free(after[fd]);
 		return (NULL);
 	}
 	ft_bzero(tmp, (BUFFER_SIZE + 1));
 	line = NULL;
+	if (after[fd])
+	{
+		line = ft_strjoin(line, after[fd]);
+		free(after[fd]);
+		after[fd] = NULL;
+	}
 	if (ft_read(fd, tmp) < 0)
 	{
 		free(tmp);
-		free(after);
 		return (NULL);
 	}
-	if (after)
-	{
-		line = ft_strjoin(line, after);
-		free(after);
-	}
-	ft_cond(&after, &tmp, &line, fd);
+	ft_cond(&after[fd], &tmp, &line, fd);
 	return (line);
 }
