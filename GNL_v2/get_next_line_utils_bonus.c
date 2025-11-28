@@ -6,7 +6,7 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 13:35:29 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/26 13:38:40 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/28 14:23:42 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!s1)
 		s1 = ft_strdup("");
 	if (!s1)
-    	return (NULL);
+		return (NULL);
 	if (!s2)
-    	return (s1);
+		return (s1);
 	new = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!new)
 		return (NULL);

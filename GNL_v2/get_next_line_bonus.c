@@ -6,7 +6,7 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 14:15:38 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/26 13:47:59 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/28 14:22:58 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ char	*ft_before_bn(char *buffer, int	*bn)
 	char	*before_n;
 	int		j;
 
+	if (!buffer)
+		return (ft_strdup(""));
 	j = 0;
 	before_n = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!before_n)
@@ -54,6 +56,8 @@ char	*ft_after_bn(char *buffer)
 	int		i;
 	int		j;
 
+	if (!buffer)
+		return (NULL);
 	i = 0;
 	j = 0;
 	while (buffer[j] != '\n' && buffer[j])
@@ -75,6 +79,7 @@ void	ft_cond(char **after, char **tmp, char **line, int fd)
 	char		*before;
 	int			bn;
 
+	*after = NULL;
 	bn = 0;
 	while (!bn)
 	{
@@ -93,7 +98,6 @@ void	ft_cond(char **after, char **tmp, char **line, int fd)
 			break ;
 		}
 	}
-	free(*tmp);
 }
 
 char	*get_next_line(int fd)
@@ -102,6 +106,8 @@ char	*get_next_line(int fd)
 	char		*tmp;
 	char		*line;
 
+	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
+		return (NULL);
 	tmp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!tmp)
 	{
@@ -116,11 +122,8 @@ char	*get_next_line(int fd)
 		free(after[fd]);
 		after[fd] = NULL;
 	}
-	if (ft_read(fd, tmp) < 0)
-	{
-		free(tmp);
-		return (NULL);
-	}
-	ft_cond(&after[fd], &tmp, &line, fd);
+	if (ft_read(fd, tmp) >= 0)
+		ft_cond(&after[fd], &tmp, &line, fd);
+	free(tmp);
 	return (line);
 }
