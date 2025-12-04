@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 14:15:38 by adakhama          #+#    #+#             */
-/*   Updated: 2025/12/04 16:59:36 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/26 13:48:29 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
 int	ft_read(int fd, char *buffer)
 {
@@ -29,8 +29,6 @@ char	*ft_before_bn(char *buffer, int	*bn)
 	char	*before_n;
 	int		j;
 
-	if (!buffer)
-		return (ft_strdup(""));
 	j = 0;
 	before_n = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!before_n)
@@ -56,8 +54,6 @@ char	*ft_after_bn(char *buffer)
 	int		i;
 	int		j;
 
-	if (!buffer)
-		return (NULL);
 	i = 0;
 	j = 0;
 	while (buffer[j] != '\n' && buffer[j])
@@ -66,7 +62,7 @@ char	*ft_after_bn(char *buffer)
 		return (NULL);
 	j++;
 	after_n = malloc(sizeof(char) * (ft_strlen(buffer + j) + 1));
-	if (!after_n)line
+	if (!after_n)
 		return (NULL);
 	while (buffer[j])
 		after_n[i++] = buffer[j++];
@@ -98,32 +94,34 @@ void	ft_cond(char **after, char **tmp, char **line, int fd)
 			break ;
 		}
 	}
+	free(*tmp);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*after[1024];
+	static char	*after = NULL;
 	char		*tmp;
 	char		*line;
 
-	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
-		return (NULL);
 	tmp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!tmp)
 	{
-		free(after[fd]);
+		free(after);
 		return (NULL);
 	}
 	ft_bzero(tmp, (BUFFER_SIZE + 1));
 	line = NULL;
-	if (after[fd])
+	if (ft_read(fd, tmp) < 0)
 	{
-		line = ft_strjoin(line, after[fd]);
-		free(after[fd]);
-		after[fd] = NULL;
+		free(tmp);
+		free(after);
+		return (NULL);
 	}
-	if (ft_read(fd, tmp) >= 0)
-		ft_cond(&after[fd], &tmp, &line, fd);
-	free(tmp);
+	if (after)
+	{
+		line = ft_strjoin(line, after);
+		free(after);
+	}
+	ft_cond(&after, &tmp, &line, fd);
 	return (line);
 }

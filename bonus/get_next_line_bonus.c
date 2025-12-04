@@ -6,7 +6,7 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 14:15:38 by adakhama          #+#    #+#             */
-/*   Updated: 2025/12/04 16:59:36 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/11/28 13:29:24 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*ft_before_bn(char *buffer, int	*bn)
 	int		j;
 
 	if (!buffer)
-		return (ft_strdup(""));
+    	return ft_strdup("");
 	j = 0;
 	before_n = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!before_n)
@@ -57,7 +57,7 @@ char	*ft_after_bn(char *buffer)
 	int		j;
 
 	if (!buffer)
-		return (NULL);
+    	return (NULL);
 	i = 0;
 	j = 0;
 	while (buffer[j] != '\n' && buffer[j])
@@ -66,7 +66,7 @@ char	*ft_after_bn(char *buffer)
 		return (NULL);
 	j++;
 	after_n = malloc(sizeof(char) * (ft_strlen(buffer + j) + 1));
-	if (!after_n)line
+	if (!after_n)
 		return (NULL);
 	while (buffer[j])
 		after_n[i++] = buffer[j++];
@@ -79,13 +79,16 @@ void	ft_cond(char **after, char **tmp, char **line, int fd)
 	char		*before;
 	int			bn;
 
-	*after = NULL;
 	bn = 0;
 	while (!bn)
 	{
 		before = ft_before_bn(*tmp, &bn);
+		if(!before)
+			break;
 		*line = ft_strjoin(*line, before);
 		free(before);
+		if (!*line)
+			break;
 		if (bn)
 		{
 			*after = ft_after_bn(*tmp);
@@ -93,11 +96,11 @@ void	ft_cond(char **after, char **tmp, char **line, int fd)
 		}
 		if (ft_read(fd, *tmp) < 0)
 		{
-			free(*after);
-			*after = NULL;
+			free(*tmp);
 			break ;
 		}
 	}
+	free(*tmp);
 }
 
 char	*get_next_line(int fd)
@@ -107,7 +110,7 @@ char	*get_next_line(int fd)
 	char		*line;
 
 	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
-		return (NULL);
+    	return (NULL);
 	tmp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!tmp)
 	{
@@ -122,8 +125,12 @@ char	*get_next_line(int fd)
 		free(after[fd]);
 		after[fd] = NULL;
 	}
-	if (ft_read(fd, tmp) >= 0)
-		ft_cond(&after[fd], &tmp, &line, fd);
+	if (ft_read(fd, tmp) < 0)
+	{
+		free(tmp);
+		return (NULL);
+	}
+	ft_cond(&after[fd], &tmp, &line, fd);
 	free(tmp);
 	return (line);
 }

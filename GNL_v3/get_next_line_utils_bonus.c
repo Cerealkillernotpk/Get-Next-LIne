@@ -1,46 +1,63 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/21 15:34:31 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/21 15:34:33 by adakhama         ###   ########.fr       */
+/*   Created: 2025/11/17 13:35:29 by adakhama          #+#    #+#             */
+/*   Updated: 2025/11/26 13:38:40 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
-int	ft_contains_nl(char *s)
+size_t	ft_strlen(const char *str)
 {
-	int	i;
+	size_t	i;
 
-	if (!s)
-		return (0);
 	i = 0;
-	while (s[i])
+	while (str[i])
 	{
-		if (s[i] == '\n')
-			return (1);
 		i++;
 	}
-	return (0);
-}
-
-int	ft_strlen(char *s)
-{
-	int	i;
-
-	if (!s)
-		return (0);
-	i = 0;
-	while (s[i])
-		i++;
 	return (i);
 }
 
-char	*ft_strdup(char *s)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	size_t				i;
+	const unsigned char	*str1;
+	unsigned char		*str2;
+
+	str1 = src;
+	str2 = dest;
+	i = 0;
+	if (!dest || !src)
+		return (NULL);
+	while (i < n)
+	{
+		str2[i] = str1[i];
+		i++;
+	}
+	return (dest);
+}
+
+void	ft_bzero(void *s, size_t n)
+{
+	size_t			i;
+	unsigned char	*str;
+
+	str = s;
+	i = 0;
+	while (i < n)
+	{
+		str[i] = '\0';
+		i++;
+	}
+}
+
+char	*ft_strdup(const char *s)
 {
 	char	*dup;
 	int		i;
@@ -66,8 +83,10 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	if (!s1)
 		s1 = ft_strdup("");
-	if (!s1 || !s2)
-		return (NULL);
+	if (!s1)
+    	return (NULL);
+	if (!s2)
+    	return (s1);
 	new = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!new)
 		return (NULL);

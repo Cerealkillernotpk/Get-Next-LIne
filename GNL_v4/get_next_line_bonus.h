@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/06 14:34:00 by adakhama          #+#    #+#             */
-/*   Updated: 2025/11/21 15:36:25 by adakhama         ###   ########.fr       */
+/*   Created: 2025/11/26 16:58:16 by adakhama          #+#    #+#             */
+/*   Updated: 2025/11/26 16:58:26 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <fcntl.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 42
 # endif
 
-char    *get_next_line(int fd);
-int     ft_contains_nl(char *s);
-int     ft_strlen(char *s);
-char	*ft_strdup(char *s);
+char	*get_next_line(int fd);
 char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strdup(const char *s);
+size_t	ft_strlen(const char *s);
+void	ft_bzero(void *s, size_t n);
 
 #endif
