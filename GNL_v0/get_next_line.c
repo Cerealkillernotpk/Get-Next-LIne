@@ -6,7 +6,7 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 14:33:21 by adakhama          #+#    #+#             */
-/*   Updated: 2025/12/04 17:00:58 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/12/05 11:58:59 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ static char	*clean_buffer(char *buffer)
 	}
 	new = malloc(ft_strlen(buffer) - i);
 	if (!new)
+	{
+		free(buffer);
 		return (NULL);
+	}
 	i++;
 	j = 0;
 	while (buffer[i])

@@ -6,11 +6,22 @@
 /*   By: adakhama <adakhama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 17:14:53 by adakhama          #+#    #+#             */
-/*   Updated: 2025/12/04 17:20:19 by adakhama         ###   ########.fr       */
+/*   Updated: 2025/12/05 11:57:08 by adakhama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
+
+
+// static int read_bis(int fd, char *buffer)
+// {
+// 	static int exe = 0;
+
+// 	exe ++;
+// 	if (exe >= 2)
+// 		return(-1);
+// 	return(read(fd, buffer, BUFFER_SIZE));
+// }
 
 static char	*read_file(int fd, char *buffer)
 {
@@ -78,9 +89,12 @@ static char	*clean_buffer(char *buffer)
 		free(buffer);
 		return (NULL);
 	}
-	new = malloc(ft_strlen(buffer) - i);
+	new = malloc(ft_strlen(buffer) - i + 1);
 	if (!new)
+	{
+		free(buffer);
 		return (NULL);
+	}
 	i++;
 	j = 0;
 	while (buffer[i])
